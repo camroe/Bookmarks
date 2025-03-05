@@ -1,5 +1,7 @@
 package com.cmr.bookmarks;
 
+import com.cmr.bookmarks.model.BookMarkCollection;
+import com.cmr.bookmarks.util.BookMarkReader;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,18 +21,21 @@ public class BookmarkAnalyzer {
 
     public static final int TIMEOUT = 3000;
     private static final Map<Integer, Integer> responseCodeCounts = new HashMap<>();
+    public static final String BOOKMARKS_HTML = "src/main/resources/data/bookmarks_2_26_25-Mac-Laptop-Bookmarks-Bar.html";
     private static int IOExceptionCount = 0;
     private static int ClassCastExceptionCount = 0;
 
     public static void main(String[] args) throws IOException {
 
         // Set the proxy settings
-        System.setProperty("http.proxyHost", "internet.ford.com");
-        System.setProperty("http.proxyPort", "83");
-        System.setProperty("https.proxyHost", "internet.ford.com");
-        System.setProperty("https.proxyPort", "83");
+//        System.setProperty("http.proxyHost", "internet.ford.com");
+//        System.setProperty("http.proxyPort", "83");
+//        System.setProperty("https.proxyHost", "internet.ford.com");
+//        System.setProperty("https.proxyPort", "83");
+        BookMarkCollection bookmarks = BookMarkReader.readBookmarks(BOOKMARKS_HTML);
 
-        File input = new File("src/main/resources/data/bookmarks_2_26_25-Mac-Laptop-Bookmarks-Bar.html");
+        System.out.println(bookmarks.toString());
+        File input = new File(BOOKMARKS_HTML);
         Document doc = Jsoup.parse(input, "UTF-8");
 
         Elements links = doc.select("A");
@@ -52,10 +57,10 @@ public class BookmarkAnalyzer {
             count++;
             if (isValidUrl(url)) {
                 validUrls.add(url);
-                System.out.println(count + ". " + url + " is valid.");
+                System.out.println(count + ". " + url + " is " + ConsoleColors.WHITE_BOLD_BRIGHT + "valid." + ConsoleColors.RESET);
             } else {
                 invalidUrls.add(url);
-                System.out.println(count + ". " + url + " is invalid.");
+                System.out.println(count + ". " + url + " is " + ConsoleColors.RED_BOLD + "invalid." + ConsoleColors.RESET);
             }
         }
         int totalBookmarks = links.size();
@@ -76,20 +81,26 @@ public class BookmarkAnalyzer {
     }
 
     private static String cleanUrl(String urlString) {
+        String originalUrlString = urlString;
         int spaceIndex = urlString.indexOf(' ');
         int hyphenIndex = urlString.indexOf('-');
         int endIndex = (spaceIndex != -1) ? spaceIndex : (hyphenIndex != -1) ? hyphenIndex : urlString.length();
-        return urlString.substring(0, endIndex).trim();
+        String returnString = urlString.substring(0, endIndex).trim();
+        if (originalUrlString.equals(returnString)) {
+            return urlString;
+        } else {
+            System.out.println("Cleaned URL: " + returnString);
+            System.out.println("Original URL: " + originalUrlString);
+        }
+        return returnString;
     }
 
     private static boolean isValidUrl(String urlString) {
-        urlString = cleanUrl(urlString);
+//        urlString = cleanUrl(urlString);
         try {
             System.out.println("Validating URL: " + urlString);
             URI uri = new URI(urlString);
-            System.out.println("Constructing url connection");
             HttpURLConnection huc = (HttpURLConnection) uri.toURL().openConnection();
-            System.out.println("Constructing url connection");
             huc.setRequestMethod("GET"); // Changed from "HEAD" to "GET" to get the response code
             huc.setConnectTimeout(TIMEOUT);
             huc.setReadTimeout(TIMEOUT);
@@ -97,19 +108,35 @@ public class BookmarkAnalyzer {
 
             // Update the response code count
             responseCodeCounts.put(responseCode, responseCodeCounts.getOrDefault(responseCode, 0) + 1);
-
-
-            return (responseCode == HttpURLConnection.HTTP_OK);
+            System.out.println("Response Code: " + responseCode + "-" + HttpResponseMessages.getMessage(responseCode));
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                return true;
+            } else if (responseCode == HttpURLConnection.HTTP_MOVED_PERM) {
+                String newUrl = huc.getHeaderField("Location");
+                System.out.println(ConsoleColors.YELLOW + "URL has moved permanently to: " + ConsoleColors.RESET + newUrl);
+                System.out.println("Validating new URL: " + newUrl);
+                if (isValidUrl(newUrl)) {
+                    return true;
+                } else {
+                    System.out.println("New URL is invalid: " + newUrl);
+                    return false;
+                }
+            } else {
+                return false;
+            }
         } catch (IOException e) {
             IOExceptionCount++;
-            System.err.println("IOException for URL: " + urlString + " - " + e.getMessage());
+            System.out.println(ConsoleColors.RED + "IOException for URL: " + ConsoleColors.RESET + urlString + "\nMessage=> " + e.getMessage());
             return false;
         } catch (ClassCastException e) {
             ClassCastExceptionCount++;
-            System.out.println("Error: Exception occurred while validating URL: " + urlString);
+            System.out.println(ConsoleColors.RED + "Error: Exception occurred while validating URL: " + ConsoleColors.RESET + urlString);
             return false;
         } catch (URISyntaxException e) {
-            System.err.println("URISyntaxException for URL: " + urlString + " - " + e.getMessage());
+            System.out.println(ConsoleColors.RED + "URISyntaxException for URL: " + ConsoleColors.RESET + urlString + "\nMessage=> " + e.getMessage());
+            return false;
+        } catch (IllegalArgumentException e) {
+            System.out.println(ConsoleColors.RED + "IllegalArgumentException for URL: " + ConsoleColors.RESET + urlString + "\nMessage=> " + e.getMessage());
             return false;
         }
     }

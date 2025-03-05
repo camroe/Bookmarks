@@ -43,6 +43,37 @@ public class HttpResponseMessages {
         responseMessages.put(HttpURLConnection.HTTP_UNAVAILABLE, "Service Unavailable");
         responseMessages.put(HttpURLConnection.HTTP_GATEWAY_TIMEOUT, "Gateway Timeout");
         responseMessages.put(HttpURLConnection.HTTP_VERSION, "HTTP Version Not Supported");
+
+        // Additional status codes
+        responseMessages.put(102, "Processing");
+        responseMessages.put(207, "Multi-Status");
+        responseMessages.put(226, "IM Used");
+        responseMessages.put(307, "Temporary Redirect");
+        responseMessages.put(308, "Permanent Redirect");
+        responseMessages.put(422, "Unprocessable Entity");
+        responseMessages.put(423, "Locked");
+        responseMessages.put(424, "Failed Dependency");
+        responseMessages.put(426, "Upgrade Required");
+        responseMessages.put(428, "Precondition Required");
+        responseMessages.put(429, "Too Many Requests");
+        responseMessages.put(431, "Request Header Fields Too Large");
+        responseMessages.put(451, "Unavailable For Legal Reasons");
+        responseMessages.put(508, "Loop Detected");
+        responseMessages.put(510, "Not Extended");
+        responseMessages.put(511, "Network Authentication Required");
+
+        // Additional status codes not previously included
+        responseMessages.put(103, "Early Hints");
+        responseMessages.put(202, "Accepted");
+        responseMessages.put(203, "Non-Authoritative Information");
+        responseMessages.put(204, "No Content");
+        responseMessages.put(205, "Reset Content");
+        responseMessages.put(418, "I'm a teapot");
+        responseMessages.put(421, "Misdirected Request");
+        responseMessages.put(444, "Connection Closed Without Response");
+        responseMessages.put(499, "Client Closed Request");
+        responseMessages.put(506, "Variant Also Negotiates");
+        responseMessages.put(507, "Insufficient Storage");
     }
 
     public static String getMessage(int code) {
