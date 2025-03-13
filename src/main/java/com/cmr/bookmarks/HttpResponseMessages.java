@@ -8,42 +8,41 @@ public class HttpResponseMessages {
     private static final Map<Integer, String> responseMessages = new HashMap<>();
 
     static {
-        responseMessages.put(HttpURLConnection.HTTP_OK, "OK");
-        responseMessages.put(HttpURLConnection.HTTP_CREATED, "Created");
-        responseMessages.put(HttpURLConnection.HTTP_ACCEPTED, "Accepted");
-        responseMessages.put(HttpURLConnection.HTTP_NOT_AUTHORITATIVE, "Non-Authoritative Information");
-        responseMessages.put(HttpURLConnection.HTTP_NO_CONTENT, "No Content");
-        responseMessages.put(HttpURLConnection.HTTP_RESET, "Reset Content");
-        responseMessages.put(HttpURLConnection.HTTP_PARTIAL, "Partial Content");
-        responseMessages.put(HttpURLConnection.HTTP_MULT_CHOICE, "Multiple Choices");
-        responseMessages.put(HttpURLConnection.HTTP_MOVED_PERM, "Moved Permanently");
-        responseMessages.put(HttpURLConnection.HTTP_MOVED_TEMP, "Temporary Redirect");
-        responseMessages.put(HttpURLConnection.HTTP_SEE_OTHER, "See Other");
-        responseMessages.put(HttpURLConnection.HTTP_NOT_MODIFIED, "Not Modified");
-        responseMessages.put(HttpURLConnection.HTTP_USE_PROXY, "Use Proxy");
-        responseMessages.put(HttpURLConnection.HTTP_BAD_REQUEST, "Bad Request");
-        responseMessages.put(HttpURLConnection.HTTP_UNAUTHORIZED, "Unauthorized");
-        responseMessages.put(HttpURLConnection.HTTP_PAYMENT_REQUIRED, "Payment Required");
-        responseMessages.put(HttpURLConnection.HTTP_FORBIDDEN, "Forbidden");
-        responseMessages.put(HttpURLConnection.HTTP_NOT_FOUND, "Not Found");
-        responseMessages.put(HttpURLConnection.HTTP_BAD_METHOD, "Method Not Allowed");
-        responseMessages.put(HttpURLConnection.HTTP_NOT_ACCEPTABLE, "Not Acceptable");
-        responseMessages.put(HttpURLConnection.HTTP_PROXY_AUTH, "Proxy Authentication Required");
-        responseMessages.put(HttpURLConnection.HTTP_CLIENT_TIMEOUT, "Request Timeout");
-        responseMessages.put(HttpURLConnection.HTTP_CONFLICT, "Conflict");
-        responseMessages.put(HttpURLConnection.HTTP_GONE, "Gone");
-        responseMessages.put(HttpURLConnection.HTTP_LENGTH_REQUIRED, "Length Required");
-        responseMessages.put(HttpURLConnection.HTTP_PRECON_FAILED, "Precondition Failed");
-        responseMessages.put(HttpURLConnection.HTTP_ENTITY_TOO_LARGE, "Request Entity Too Large");
-        responseMessages.put(HttpURLConnection.HTTP_REQ_TOO_LONG, "Request-URI Too Long");
-        responseMessages.put(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, "Unsupported Media Type");
-        responseMessages.put(HttpURLConnection.HTTP_INTERNAL_ERROR, "Internal Server Error");
-        responseMessages.put(HttpURLConnection.HTTP_NOT_IMPLEMENTED, "Not Implemented");
-        responseMessages.put(HttpURLConnection.HTTP_BAD_GATEWAY, "Bad Gateway");
-        responseMessages.put(HttpURLConnection.HTTP_UNAVAILABLE, "Service Unavailable");
-        responseMessages.put(HttpURLConnection.HTTP_GATEWAY_TIMEOUT, "Gateway Timeout");
-        responseMessages.put(HttpURLConnection.HTTP_VERSION, "HTTP Version Not Supported");
-
+        responseMessages.put(HttpURLConnection.HTTP_OK, "OK"); // 200
+        responseMessages.put(HttpURLConnection.HTTP_CREATED, "Created"); // 201
+        responseMessages.put(HttpURLConnection.HTTP_ACCEPTED, "Accepted"); // 202
+        responseMessages.put(HttpURLConnection.HTTP_NOT_AUTHORITATIVE, "Non-Authoritative Information"); // 203
+        responseMessages.put(HttpURLConnection.HTTP_NO_CONTENT, "No Content"); // 204
+        responseMessages.put(HttpURLConnection.HTTP_RESET, "Reset Content"); // 205
+        responseMessages.put(HttpURLConnection.HTTP_PARTIAL, "Partial Content"); // 206
+        responseMessages.put(HttpURLConnection.HTTP_MULT_CHOICE, "Multiple Choices"); // 300
+        responseMessages.put(HttpURLConnection.HTTP_MOVED_PERM, "Moved Permanently"); // 301
+        responseMessages.put(HttpURLConnection.HTTP_MOVED_TEMP, "Temporary Redirect"); // 302
+        responseMessages.put(HttpURLConnection.HTTP_SEE_OTHER, "See Other"); // 303
+        responseMessages.put(HttpURLConnection.HTTP_NOT_MODIFIED, "Not Modified"); // 304
+        responseMessages.put(HttpURLConnection.HTTP_USE_PROXY, "Use Proxy"); // 305
+        responseMessages.put(HttpURLConnection.HTTP_BAD_REQUEST, "Bad Request"); // 400
+        responseMessages.put(HttpURLConnection.HTTP_UNAUTHORIZED, "Unauthorized"); // 401
+        responseMessages.put(HttpURLConnection.HTTP_PAYMENT_REQUIRED, "Payment Required"); // 402
+        responseMessages.put(HttpURLConnection.HTTP_FORBIDDEN, "Forbidden"); // 403
+        responseMessages.put(HttpURLConnection.HTTP_NOT_FOUND, "Not Found"); // 404
+        responseMessages.put(HttpURLConnection.HTTP_BAD_METHOD, "Method Not Allowed"); // 405
+        responseMessages.put(HttpURLConnection.HTTP_NOT_ACCEPTABLE, "Not Acceptable"); // 406
+        responseMessages.put(HttpURLConnection.HTTP_PROXY_AUTH, "Proxy Authentication Required"); // 407
+        responseMessages.put(HttpURLConnection.HTTP_CLIENT_TIMEOUT, "Request Timeout"); // 408
+        responseMessages.put(HttpURLConnection.HTTP_CONFLICT, "Conflict"); // 409
+        responseMessages.put(HttpURLConnection.HTTP_GONE, "Gone"); // 410
+        responseMessages.put(HttpURLConnection.HTTP_LENGTH_REQUIRED, "Length Required"); // 411
+        responseMessages.put(HttpURLConnection.HTTP_PRECON_FAILED, "Precondition Failed"); // 412
+        responseMessages.put(HttpURLConnection.HTTP_ENTITY_TOO_LARGE, "Request Entity Too Large"); // 413
+        responseMessages.put(HttpURLConnection.HTTP_REQ_TOO_LONG, "Request-URI Too Long"); // 414
+        responseMessages.put(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, "Unsupported Media Type"); // 415
+        responseMessages.put(HttpURLConnection.HTTP_INTERNAL_ERROR, "Internal Server Error"); // 500
+        responseMessages.put(HttpURLConnection.HTTP_NOT_IMPLEMENTED, "Not Implemented"); // 501
+        responseMessages.put(HttpURLConnection.HTTP_BAD_GATEWAY, "Bad Gateway"); // 502
+        responseMessages.put(HttpURLConnection.HTTP_UNAVAILABLE, "Service Unavailable"); // 503
+        responseMessages.put(HttpURLConnection.HTTP_GATEWAY_TIMEOUT, "Gateway Timeout"); // 504
+        responseMessages.put(HttpURLConnection.HTTP_VERSION, "HTTP Version Not Supported"); // 505
         // Additional status codes
         responseMessages.put(102, "Processing");
         responseMessages.put(207, "Multi-Status");

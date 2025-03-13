@@ -1,11 +1,15 @@
 package com.cmr.bookmarks.model;
 
+import java.util.Objects;
+
 public class BookMark {
     private String title;
     private String url;
     private String folder;
     private long addDate;
     private long lastModified;
+    private boolean isValid = false;
+    private boolean isDuplicate = false;
 
     public BookMark(String title, String url, String folder, long addDate, long lastModified) {
         this.title = title;
@@ -71,6 +75,22 @@ public class BookMark {
         }
     }
 
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean valid) {
+        isValid = valid;
+    }
+
+    public boolean isDuplicate() {
+        return isDuplicate;
+    }
+
+    public void setDuplicate(boolean duplicate) {
+        isDuplicate = duplicate;
+    }
+
     @Override
     public String toString() {
         return "Bookmark{" +
@@ -80,5 +100,18 @@ public class BookMark {
                 ", addDate=" + addDate +
                 ", lastModified=" + lastModified +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookMark bookMark = (BookMark) o;
+        return addDate == bookMark.addDate && lastModified == bookMark.lastModified && isValid == bookMark.isValid && isDuplicate == bookMark.isDuplicate && Objects.equals(title, bookMark.title) && Objects.equals(url, bookMark.url) && Objects.equals(folder, bookMark.folder);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, url, folder, addDate, lastModified, isValid, isDuplicate);
     }
 }

@@ -1,7 +1,7 @@
 package com.cmr.bookmarks.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class BookMarkCollection {
     private String folderTitle;
@@ -45,5 +45,61 @@ public class BookMarkCollection {
                 ", bookmarks=" + bookmarks +
                 ", subFolders=" + subFolders +
                 '}';
+    }
+
+    // Method to merge two BookmarkCollection instances
+    public void mergeWith(BookMarkCollection other, boolean removeDuplicateBookmarks) {
+        // 1. Merge Bookmarks
+        if (removeDuplicateBookmarks) {
+            // Use a Set to track URLs and avoid duplicates
+            List<String> existingUrls = this.bookmarks.stream().map(BookMark::getUrl).collect(Collectors.toList());
+
+            for (BookMark bookmark : other.getBookmarks()) {
+                if (!existingUrls.contains(bookmark.getUrl())) {
+                    this.addBookmark(bookmark);
+                    existingUrls.add(bookmark.getUrl());
+                }
+            }
+        } else {
+            // Simply add all bookmarks from the other collection
+            this.bookmarks.addAll(other.getBookmarks());
+        }
+
+        // 2. Merge Subfolders
+        // Use a map to group subfolders by name
+        Map<String, BookMarkCollection> subfolderMap = new HashMap<>();
+
+        // Add existing subfolders to the map
+        for (BookMarkCollection subFolder : this.getSubFolders()) {
+            subfolderMap.put(subFolder.getFolderTitle(), subFolder);
+        }
+
+        // Iterate through the other collection's subfolders
+        for (BookMarkCollection otherSubFolder : other.getSubFolders()) {
+            String folderTitle = otherSubFolder.getFolderTitle();
+
+            if (subfolderMap.containsKey(folderTitle)) {
+                // Subfolder with the same name exists, so merge them recursively
+                BookMarkCollection existingSubFolder = subfolderMap.get(folderTitle);
+                existingSubFolder.mergeWith(otherSubFolder, removeDuplicateBookmarks);
+            } else {
+                // Subfolder with this name doesn't exist, so add it to the current collection
+                this.addSubFolder(otherSubFolder);
+                subfolderMap.put(folderTitle, otherSubFolder); // Add to the map
+            }
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookMarkCollection that = (BookMarkCollection) o;
+        return Objects.equals(folderTitle, that.folderTitle) && Objects.equals(bookmarks, that.bookmarks) && Objects.equals(subFolders, that.subFolders);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(folderTitle, bookmarks, subFolders);
     }
 }
