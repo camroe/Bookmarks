@@ -18,7 +18,8 @@ public class SystemPropertiesPrinter {
                         e -> e.getValue().toString()
                 )));
         // Print system properties in alphabetical order
-        sortedProperties.forEach((key, value) -> logger.info(key + ": " + value));    }
-
-
+        sortedProperties.forEach((key, value) -> logger.info(key + ": " + value));
     }
+
+
+}

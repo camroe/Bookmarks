@@ -1,4 +1,5 @@
 package com.cmr.bookmarks;
+
 public class ConsoleColors {
 
     // Reset color to default

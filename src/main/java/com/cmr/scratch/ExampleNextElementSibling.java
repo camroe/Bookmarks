@@ -1,4 +1,5 @@
 package com.cmr.scratch;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

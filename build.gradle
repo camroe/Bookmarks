@@ -1,6 +1,8 @@
 plugins {
-    id 'org.springframework.boot' version '2.7.5'
-    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+//    id 'org.springframework.boot' version '2.7.5'
+//    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id 'org.springframework.boot' version '3.3.0' // Keep this for the plugin
+    id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
     id 'application'
 }
@@ -15,8 +17,15 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.jsoup:jsoup:1.14.3'
-    implementation 'org.slf4j:slf4j-api:1.7.32'
-    implementation 'ch.qos.logback:logback-classic:1.2.6'
+//    implementation 'org.slf4j:slf4j-api:1.7.32'
+//    implementation 'ch.qos.logback:logback-classic:1.2.6'
+
+    implementation 'org.slf4j:slf4j-api:2.0.17'
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'ch.qos.logback:logback-core'
+    implementation 'org.apache.logging.log4j:log4j-to-slf4j:2.23.1'
+
+
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
@@ -26,5 +35,5 @@ test {
 }
 
 application {
-    mainClassName = 'com.cmr.bookmarks.BookmarkAnalyzer'
+    mainClassName = 'com.cmr.bookmarks.Main'
 }

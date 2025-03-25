@@ -41,7 +41,7 @@ public class BookMarkReader {
                     // Find the next sibling element that is a list (DL tag)
                     // It should be the next element after the folder element
                     Element subList = el.nextElementSibling();
-                    System.out.println("Handling Sublist: " + subList.toString().substring(0,25) + "...");
+                    System.out.println("Handling Sublist: " + subList.toString().substring(0, 25) + "...");
                     while (subList != null && !subList.tagName().equalsIgnoreCase("DL")) {
                         System.out.println("Tag: " + subList.tagName() + " Text: " + subList.text());
                         subList = subList.nextElementSibling();
