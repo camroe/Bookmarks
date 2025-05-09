@@ -16,7 +16,12 @@ public class FileNamesConfig {
     private String outputfile;
 
     public List<String> getFileNames() {
-        return fileNames;
+        if (fileNames == null || fileNames.isEmpty()) {
+            throw new IllegalArgumentException("File names list is empty or not provided.");
+        }
+        return ( fileNames.stream()
+                .map(fileName -> filePath + fileName)
+                .toList());
     }
 
     public String getFilePath() {

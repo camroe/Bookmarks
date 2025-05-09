@@ -5,11 +5,15 @@ import java.util.stream.Collectors;
 
 public class BookMarkCollection {
     private String folderTitle;
+    private long addDate;
+    private long lastModified;
     private List<BookMark> bookmarks;
     private List<BookMarkCollection> subFolders;
 
-    public BookMarkCollection(String folderTitle) {
+    public BookMarkCollection(String folderTitle, long addDate, long lastModified) {
         this.folderTitle = folderTitle;
+        this.addDate = addDate;
+        this.lastModified = lastModified;
         this.bookmarks = new ArrayList<>();
         this.subFolders = new ArrayList<>();
     }
@@ -20,6 +24,22 @@ public class BookMarkCollection {
 
     public void setFolderTitle(String folderTitle) {
         this.folderTitle = folderTitle;
+    }
+
+    public long getAddDate() {
+        return addDate;
+    }
+
+    public void setAddDate(long addDate) {
+        this.addDate = addDate;
+    }
+
+    public long getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(long lastModified) {
+        this.lastModified = lastModified;
     }
 
     public void addBookmark(BookMark bookmark) {
@@ -37,17 +57,43 @@ public class BookMarkCollection {
     public List<BookMarkCollection> getSubFolders() {
         return subFolders;
     }
+    // Method to recursively get the number of folders in this collection
+    public int getNumberOfFolders() {
+        int count = 1; // Count this folder
+        for (BookMarkCollection subFolder : subFolders) {
+            count += subFolder.getNumberOfFolders(); // Add the count of subfolders
+        }
+        return count;
+    }
 
+    //Method to recursively get the number of bookmarks in this collection
+    public int getNumberOfBookmarks() {
+        int count = bookmarks.size(); // Count bookmarks in this folder
+        for (BookMarkCollection subFolder : subFolders) {
+            count += subFolder.getNumberOfBookmarks(); // Add the count of bookmarks in subfolders
+        }
+        return count;
+    }
+
+    public void setBookmarks(List<BookMark> bookmarks) {
+        this.bookmarks = bookmarks;
+    }
+
+    public void setSubFolders(List<BookMarkCollection> subFolders) {
+        this.subFolders = subFolders;
+    }
     @Override
     public String toString() {
-        return "BookmarkCollection{" +
+        return "BookMarkCollection{" +
                 "folderTitle='" + folderTitle + '\'' +
+                ", addDate=" + addDate +
+                ", lastModified=" + lastModified +
                 ", bookmarks=" + bookmarks +
                 ", subFolders=" + subFolders +
                 '}';
     }
 
-    // Method to merge two BookmarkCollection instances
+    // Method to merge two BookMarkCollection instances
     public void mergeWith(BookMarkCollection other, boolean removeDuplicateBookmarks) {
         // 1. Merge Bookmarks
         if (removeDuplicateBookmarks) {
@@ -95,11 +141,11 @@ public class BookMarkCollection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BookMarkCollection that = (BookMarkCollection) o;
-        return Objects.equals(folderTitle, that.folderTitle) && Objects.equals(bookmarks, that.bookmarks) && Objects.equals(subFolders, that.subFolders);
+        return addDate == that.addDate && lastModified == that.lastModified && Objects.equals(folderTitle, that.folderTitle) && Objects.equals(bookmarks, that.bookmarks) && Objects.equals(subFolders, that.subFolders);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(folderTitle, bookmarks, subFolders);
+        return Objects.hash(folderTitle, addDate, lastModified, bookmarks, subFolders);
     }
 }

@@ -107,11 +107,11 @@ public class BookMark {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BookMark bookMark = (BookMark) o;
-        return addDate == bookMark.addDate && lastModified == bookMark.lastModified && isValid == bookMark.isValid && isDuplicate == bookMark.isDuplicate && Objects.equals(title, bookMark.title) && Objects.equals(url, bookMark.url) && Objects.equals(folder, bookMark.folder);
+        return Objects.equals(title,bookMark.title) && Objects.equals(url, bookMark.url);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, url, folder, addDate, lastModified, isValid, isDuplicate);
+        return Objects.hash(title, url);
     }
 }

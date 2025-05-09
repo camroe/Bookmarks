@@ -7,10 +7,10 @@ public class BookmarkSorter {
 
     public static void sortFoldersAndBookmarks(BookMarkCollection collection) {
         // Sort subfolders alphabetically by name
-        Collections.sort(collection.getSubFolders(), Comparator.comparing(BookMarkCollection::getFolderTitle));
+        collection.getSubFolders().sort(Comparator.comparing(BookMarkCollection::getFolderTitle, String.CASE_INSENSITIVE_ORDER));
 
         // Sort bookmarks alphabetically by title
-        Collections.sort(collection.getBookmarks(), Comparator.comparing(BookMark::getTitle));
+        collection.getBookmarks().sort(Comparator.comparing(BookMark::getTitle, String.CASE_INSENSITIVE_ORDER));
 
         // Recursively sort subfolders
         for (BookMarkCollection subFolder : collection.getSubFolders()) {

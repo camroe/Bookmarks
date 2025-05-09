@@ -23,7 +23,7 @@ public class BookMarkWriter {
 
     private static void writeCollection(BookMarkCollection collection, BufferedWriter writer) throws IOException {
         for (BookMarkCollection subFolder : collection.getSubFolders()) {
-            writer.write("<DT><H3>" + subFolder.getFolderTitle() + "</H3>\n");
+            writer.write("<DT><H3 ADD_DATE=\"" + subFolder.getAddDate() + "\" LAST_MODIFIED=\"" + subFolder.getLastModified() + "\">" + subFolder.getFolderTitle() + "</H3>\n");
             writer.write("<DL><p>\n");
             writeCollection(subFolder, writer);
             writer.write("</DL><p>\n");

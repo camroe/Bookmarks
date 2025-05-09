@@ -3,6 +3,7 @@ package com.cmr.bookmarks;
 import com.cmr.bookmarks.model.*;
 import com.cmr.bookmarks.util.BookMarkWriter;
 import com.cmr.bookmarks.util.BookmarkAnalyzer2;
+import com.cmr.bookmarks.util.BookmarkMerger;
 import com.cmr.bookmarks.util.SystemPropertiesPrinter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,7 +28,8 @@ public class Parse implements CommandLineRunner {
     @Autowired
     private FileNamesConfig fileNamesConfig;
     private static final Logger logger = LoggerFactory.getLogger(Parse.class);
-    public static final String BOOKMARKS_HTML = "src/main/resources/data/bookmarks_2_26_25-Mac-Laptop-Bookmarks-Bar.html";
+//    public static final String BOOKMARKS_HTML = "src/main/resources/data/bookmarks_2_26_25-Mac-Laptop-Bookmarks-Bar.html";
+//    public static final String BOOKMARKS_HTML = "src/main/resources/data/bookmarks_3_25_25_BookMarks-Bar-Imac.html";
     private List<BookMarkCollection> collections = new ArrayList<>();
     @Value("${com.cmr.bookmarks.model.sort}")
     private boolean sortBookmarks;
@@ -57,10 +59,10 @@ public class Parse implements CommandLineRunner {
             logger.info("Processing file: {}", fileName);
 
             try {
-                File input = new File(BOOKMARKS_HTML);
+                File input = new File(fileName);
                 Document doc = Jsoup.parse(input, "UTF-8");
                 Element rootElement = doc.selectFirst("DL");
-                BookMarkCollection rootCollection = new BookMarkCollection("root");
+                BookMarkCollection rootCollection = new BookMarkCollection("root", 0,0);
                 logger.debug("Number of children: {}", Objects.requireNonNull(rootElement).children().size());
                 parseBookmarks(rootElement, rootCollection);
                 BookmarkCounter.CountResult countResult = BookmarkCounter.countFoldersAndBookmarks(rootCollection);
@@ -69,34 +71,56 @@ public class Parse implements CommandLineRunner {
                     logger.info("Total Folders: {}", countResult.folderCount);
                     logger.info("Total Bookmarks: {}", countResult.bookmarkCount);
                 }
-
-
+//                logger.info("Printing bookmarks...Before Sort");
+//                if (printBookmarks) {
+//                    BookmarkPrinter.printTree(rootCollection, 0);
+//                }
                 // Sort the bookmarks - Property
                 if (sortBookmarks) {
                     BookmarkSorter.sortFoldersAndBookmarks(rootCollection);
                     logger.info("Done sorting bookmarks.");
                 }
                 // Print the sorted folders and bookmarks - Property
-                if (printBookmarks) {
-                    BookmarkPrinter.printTree(rootCollection, 0);
-                }
                 // Validate the bookmarks - Property
                 if (validateBookmarks) {
                     logger.info("Validating bookmarks... this may take a while.");
                     BookmarkAnalyzer2.analyzeTree(rootCollection);
                 }
+//                logger.info("Printing bookmarks...After Sort");
+//                if (printBookmarks) {
+//                    BookmarkPrinter.printTree(rootCollection, 0);
+//                }
+                // add the collection to the list of collections
                 collections.add(rootCollection);
             } catch (IOException e) {
                 logger.error("Error reading bookmarks file: {}", e.getMessage());
             }
-
         }
-        if (fileNamesConfig.isMultipleFiles()) {
+
+        if (collections.size() > 1) {
             // Merge the collections
-            logger.info("Found {} files, Should merge NOW", fileNames.size());
+            logger.info("Number of collections: {}", collections.size());
+            for (int i = 1; i < collections.size(); i++) {
+                logger.info("Merging collection {} with collection {}", i, 0);
+                // Print out the size of the collections
+                logger.info("Number of folders in collection {}: {}", 0, collections.get(0).getNumberOfFolders());
+                logger.info("Number of bookmarks in collection {}: {}", 0, collections.get(0).getNumberOfBookmarks());
+                logger.info("Number of folders in collection {}: {}", i, collections.get(i).getNumberOfFolders());
+                logger.info("Number of bookmarks in collection {}: {}", i, collections.get(i).getNumberOfBookmarks());
+                logger.info("___________________________________________");
+                
+                collections.set(0, BookmarkMerger.mergeCollections(collections.get(0), collections.get(i)));
+            }
+            logger.info("Number of folders in collection {}: {}", 0,collections.get(0).getNumberOfFolders());
+            logger.info("Number of bookmarks in collection {}: {}", 0,collections.get(0).getNumberOfBookmarks());
         }
         try {
             logger.info("Writing bookmarks to file: {}", fileNamesConfig.getOutputFile());
+            if (printBookmarks) {
+                logger.info("Printing bookmarks... this may take a while.");
+                BookmarkPrinter.printTree(collections.get(0), 0);
+                BookmarkPrinter.printFolders(collections.get(0),0);
+            }
             BookMarkWriter.writeBookmarks(collections.get(0), fileNamesConfig.getOutputFile());
         } catch (IOException e) {
             logger.error("Failed to write bookmarks to file: {}", fileNamesConfig.getOutputFile(), e);
@@ -123,11 +147,14 @@ public class Parse implements CommandLineRunner {
                     //There is a folder here
                     logger.debug("Folder element: {}", folderElement.html());
                     String folderTitle = folderElement.text();
-                    BookMarkCollection subCollection = new BookMarkCollection(folderTitle);
+                    long addDate = Long.parseLong(folderElement.attr("ADD_DATE"));
+                    long lastModified = Long.parseLong(folderElement.attr("LAST_MODIFIED"));
+                    BookMarkCollection subCollection = new BookMarkCollection(folderTitle, addDate, lastModified);
                     logger.debug("Adding folder: {}", folderTitle);
                     // Find the next child element that is a list (DL tag)
                     Element childElement = el.selectFirst("DL");
                     if (childElement != null) {
+                        logger.info("Adding subfolder '{}' to parent folder '{}'", subCollection.getFolderTitle(), collection.getFolderTitle());
                         parseBookmarks(childElement, subCollection);
                     }
                     collection.addSubFolder(subCollection);

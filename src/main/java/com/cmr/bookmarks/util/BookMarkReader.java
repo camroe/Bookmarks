@@ -16,7 +16,7 @@ public class BookMarkReader {
         File input = new File(filePath);
         Document doc = Jsoup.parse(input, "UTF-8");
         Element rootElement = doc.selectFirst("DL");
-        BookMarkCollection rootCollection = new BookMarkCollection("root");
+        BookMarkCollection rootCollection = new BookMarkCollection("root",0,0);
         parseBookmarks(rootElement, rootCollection);
 
         return rootCollection;
@@ -34,7 +34,9 @@ public class BookMarkReader {
                 if (folderElement != null) {
                     // Create a new bookmark collection for the folder
                     String folderTitle = folderElement.text();
-                    BookMarkCollection subCollection = new BookMarkCollection(folderTitle);
+                    long addDate = Long.parseLong(folderElement.attr("ADD_DATE"));
+                    long lastModified = Long.parseLong(folderElement.attr("LAST_MODIFIED"));
+                    BookMarkCollection subCollection = new BookMarkCollection(folderTitle, addDate, lastModified);
                     collection.addSubFolder(subCollection);
                     System.out.println("Adding folder: " + folderTitle);
 
