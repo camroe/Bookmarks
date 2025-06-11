@@ -6,22 +6,25 @@ public class BookMark {
     private String title;
     private String url;
     private String folder;
+    private String icon;
     private long addDate;
     private long lastModified;
     private boolean isValid = false;
     private boolean isDuplicate = false;
 
-    public BookMark(String title, String url, String folder, long addDate, long lastModified) {
+    public BookMark(String title, String url, String folder, String icon, long addDate, long lastModified) {
         this.title = title;
         this.url = url;
         this.folder = folder;
+        this.icon = icon;
         this.addDate = addDate;
         this.lastModified = lastModified;
     }
 
-    public BookMark(String title, String url, String addDate, String lastModified) {
+    public BookMark(String title, String url, String icon, String addDate, String lastModified) {
         this.title = title;
         this.url = url;
+        this.icon = icon;
         this.addDate = Long.parseLong(addDate);
         setLastModified(lastModified);
     }
@@ -48,6 +51,14 @@ public class BookMark {
 
     public void setFolder(String folder) {
         this.folder = folder;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public long getAddDate() {
@@ -107,7 +118,7 @@ public class BookMark {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BookMark bookMark = (BookMark) o;
-        return Objects.equals(title,bookMark.title) && Objects.equals(url, bookMark.url);
+        return Objects.equals(title, bookMark.title) && Objects.equals(url, bookMark.url);
     }
 
     @Override

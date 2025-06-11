@@ -65,6 +65,7 @@ public class BookMarkReader {
                         // Extract bookmark details
                         String title = linkElement.text();
                         String url = linkElement.attr("HREF");
+                        String icon = linkElement.attr("ICON");
                         long addDate = Long.parseLong(linkElement.attr("ADD_DATE"));
                         String lastModifiedStr = linkElement.attr("LAST_MODIFIED");
                         if (lastModifiedStr.isEmpty()) {
@@ -73,7 +74,7 @@ public class BookMarkReader {
                         long lastModified = Long.parseLong(lastModifiedStr);
 
                         // Create a new bookmark object and add it to the collection
-                        BookMark bookmark = new BookMark(title, url, collection.getFolderTitle(), addDate, lastModified);
+                        BookMark bookmark = new BookMark(title, url, collection.getFolderTitle(), icon, addDate, lastModified);
                         collection.addBookmark(bookmark);
                         System.out.println("Adding bookmark: " + title + " to folder: " + collection.getFolderTitle());
                     }

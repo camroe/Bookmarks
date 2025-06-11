@@ -166,7 +166,8 @@ public class Parse implements CommandLineRunner {
                         String url = bookmarkElement.attr("HREF");
                         String addDate = bookmarkElement.attr("ADD_DATE");
                         String lastModified = bookmarkElement.attr("LAST_MODIFIED");
-                        collection.addBookmark(new BookMark(title, url, addDate, lastModified));
+                        String icon = bookmarkElement.attr("ICON");
+                        collection.addBookmark(new BookMark(title, url, icon, addDate, lastModified));
                         logger.debug("Adding bookmark: {}", title);
                     }
                 }
