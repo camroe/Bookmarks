@@ -29,7 +29,7 @@ public class BookMarkWriter {
             writer.write("</DL><p>\n");
         }
         for (BookMark bookmark : collection.getBookmarks()) {
-            writer.write("<DT><A HREF=\"" + bookmark.getUrl() + "\" ADD_DATE=\"" + bookmark.getAddDate() + "\" LAST_MODIFIED=\"" + bookmark.getLastModified() + "\">" + bookmark.getTitle() + "</A>\n");
+            writer.write("<DT><A HREF=\"" + bookmark.getUrl() + "\" ADD_DATE=\"" + bookmark.getAddDate() + "\" ICON=\"" + bookmark.getIcon() + "\" LAST_MODIFIED=\"" + bookmark.getLastModified() + "\">" + bookmark.getTitle() + "</A>\n");
         }
     }
 
